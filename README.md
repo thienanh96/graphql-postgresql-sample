@@ -1,5 +1,5 @@
 # graphql-postgresql-sample
-Setup construction
+Setup instruction
 1. Clone this project
 2. Run sudo yarn install
 3. Run node server
