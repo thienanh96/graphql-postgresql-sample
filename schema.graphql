@@ -1,0 +1,104 @@
+scalar JSON
+type Query {
+  user(id: String!): User!
+  users: [User]
+  folder(id: String!): Folder!
+  folders(input: Folders): [Folder]
+}
+
+type Mutation {
+  createUser(input: CreateUser!): User!
+  updateUser(input: UpdateUser!): User!
+  deleteUser(id: String!): DeletePayload!
+  createFolder(input: CreateFolder!): Folder!
+  updateFolder(input: UpdateFolder!): Folder!
+  deleteFolder(id: String!): DeletePayload!
+}
+
+input CreateUser {
+  firstName: String
+  lastName: String
+  email: String!
+  userName: String!
+  status: Status!
+  thumbnailUrl: String
+}
+
+input UpdateUser {
+  id: String!
+  firstName: String
+  lastName: String
+  birthDay: String
+  thumbnailUrl: String
+  password: String
+  modifiesBy: String!
+  details: JSON
+  status: Status!
+}
+
+input CreateFolder {
+  name: String!
+  description: String
+  thumbnailUrl: String
+  parentId: String
+  status: Status!
+  userId: String!
+
+}
+
+input UpdateFolder {
+  id: String!
+  name: String
+  description: String
+  thumbnailUrl: String
+  status: Status
+  modifiedBy: String!
+}
+
+enum Status {
+  active
+  inactive
+  suppend
+  deleted
+}
+
+input Folders {
+  name: String
+}
+
+type User {
+  id: String
+  firstName: String
+  lastName: String
+  userName: String
+  details: String
+  birthDay: String
+  password: String
+  thumbnailUrl: String
+  status: Status
+  lastLoggedIn: String
+  dateCreated: String
+  dateModified: String
+  dateDeleted: String
+  modifiesBy: String
+  folders: [Folder]
+}
+
+type Folder {
+  id: String
+  name: String
+  description: String
+  thumbnailUrl: String
+  parentId: Int
+  status: Status
+  createdDate: String
+  modifiedDate: String
+  modifiedBy: String
+  deletedDate: String
+  user: User
+}
+
+type DeletePayload {
+  id: String!
+  message: String
+}
