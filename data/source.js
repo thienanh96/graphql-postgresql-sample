@@ -15,9 +15,7 @@ const SQL_QUERY = {
         delete: `UPDATE sso_user SET status_id = 4 WHERE user_id = $1 RETURNING *;`
     },
     FOLDER: {
-        getManyByUser: `SELECT * FROM folder WHERE user_id = $1 AND status_id <> 4 AND status_id <> 0`,
         getOne: `SELECT * FROM folder WHERE id = $1 AND status_id <> 4 AND status_id <> 0`,
-        getManyByName: `SELECT * FROM folder WHERE name = $1 AND status_id <> 4 AND status_id <> 0`,
         create: `INSERT INTO folder (name, description, thumbnail_url, parent_id, status_id, user_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;`,
         delete: `UPDATE folder SET status_id = 4 WHERE id = $1 RETURNING *;`
     }
