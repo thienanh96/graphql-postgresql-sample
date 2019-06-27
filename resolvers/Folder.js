@@ -1,4 +1,5 @@
-const { statusMapping } = require('../utils')
+const { transformation } = require('../utils');
+const { statusMapping } = transformation
 module.exports = {
     Folder: {
         id: ({ id = null }) => id,
@@ -14,9 +15,7 @@ module.exports = {
         modifiedBy: ({ modifiedBy = null }) => modifiedBy,
         deletedDate: ({ deletedDate = null }) => deletedDate,
         user: async ({ userId }, args, { dataSources }, { }) => {
-            console.log("TCL: userId", userId)
-            const user = await dataSources.user.getUser(userId)
-            console.log("TCL: user", user)
+            const user = await dataSources.user.getUser(userId);
             return user
         }
     }

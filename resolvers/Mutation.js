@@ -1,4 +1,6 @@
-const { statusMapping, validation, getFailureResponse } = require('../utils')
+const { transformation, validation, response } = require('../utils');
+const { getFailureResponse } = response;
+const { statusMapping } = transformation
 const { isEmptyString, isValidEmail, isNotNullOrUndefined } = validation
 module.exports = {
     Mutation: {

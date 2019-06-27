@@ -1,6 +1,8 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
-const { convertToCamelcaseObject, sqlQuery } = require('../utils');
-const { createUpdateQuery } = sqlQuery;
+const { transformation, sqlQuery, response } = require('../utils');
+const { convertToCamelcaseObject } = transformation;
+const { getFailureResponse } = response;
+const { createUpdateQuery, createGetManyQuery } = sqlQuery;
 const initDB = require('../initdb')
 const configServer = require('../server.json')
 const databaseConnection = initDB({}, configServer, {})
@@ -82,10 +84,15 @@ class UserSource extends RESTDataSource {
 
 
     async updateUser({ id, firstName, lastName, statusId, details, modifiesBy, password, thumbnailUrl, birthDay }) {
-        console.log("TCL: updateUser -> details", details)
         try {
             const updateQueryObject = createUpdateQuery('sso_user',
                 { firstName, lastName, statusId, details, modifiesBy, password, thumbnailUrl, birthDay }, `user_id = '${id}'`)
+            if (!updateQueryObject) {
+                throw getFailureResponse({
+                    message: 'No params to update',
+                    code: 400
+                })
+            }
             const { params, query } = updateQueryObject;
             const updateResult = await databaseConnection.postgres.write.one(query, params)
                 .catch(err => {
@@ -95,9 +102,9 @@ class UserSource extends RESTDataSource {
                 const convertedUser = convertToCamelcaseObject(updateResult)
                 return convertedUser
             }
-            const error = new Error('Update user failure');
-            error.code = 500
-            throw error
+            throw getFailureResponse({
+                message: 'Update user failure'
+            })
         } catch (error) {
             throw error
 
@@ -127,12 +134,15 @@ class UserSource extends RESTDataSource {
 
 class FolderSource extends RESTDataSource {
 
-    async getFoldersByUser(userID) { //get list folders by userID
-        if (!userID) { //validate userID
-            return null
-        }
+    async getFolders({ userId, parentId, name }) { //get list folders by userID
         try {
-            const folders = await databaseConnection.postgres.read.manyOrNone(SQL_QUERY.FOLDER.getManyByUser, [userID]);
+            const getManyQueryObject = createGetManyQuery('folder', {
+                userId,
+                parentId,
+                name
+            });
+            const { query, params } = getManyQueryObject
+            const folders = await databaseConnection.postgres.read.manyOrNone(query, params);
             const convertedFolders = [];
             if (Array.isArray(folders)) {
                 folders.forEach(folder => {
@@ -148,26 +158,6 @@ class FolderSource extends RESTDataSource {
 
     }
 
-    async getFoldersByName(folderName) { //get list folders by userID
-        if (!folderName) { //validate userID
-            return null
-        }
-        try {
-            const folders = await databaseConnection.postgres.read.manyOrNone(SQL_QUERY.FOLDER.getManyByName, [folderName]);
-            const convertedFolders = [];
-            if (Array.isArray(folders)) {
-                folders.forEach(folder => {
-                    let newFolder = convertToCamelcaseObject(folder)
-                    convertedFolders.push(newFolder)
-                })
-
-            }
-            return convertedFolders;
-        } catch (error) {
-            throw error;
-        }
-
-    }
 
     async getFolderById(folderID) { //get list folders by ID
         if (!folderID) { //validate userID

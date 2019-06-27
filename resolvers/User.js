@@ -1,4 +1,5 @@
-const { statusMapping } = require('../utils')
+const { transformation } = require('../utils');
+const { statusMapping } = transformation;
 module.exports = {
     User: {
         id: ({ userId = null }) => userId,
@@ -18,7 +19,7 @@ module.exports = {
         dateDeleted: ({ dateDeleted = null }) => dateDeleted,
         modifiesBy: ({ modifiesBy = null }) => modifiesBy,
         folders: async ({ userId }, args, { dataSources }, { }) => {
-            const folders = await dataSources.folder.getFoldersByUser(userId)
+            const folders = await dataSources.folder.getFolders({ userId })
             return folders
         }
     }

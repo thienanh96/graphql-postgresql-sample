@@ -58,11 +58,13 @@ input UpdateFolder {
 enum Status {
   active
   inactive
-  suppend
+  suspend
   deleted
 }
 
 input Folders {
+  userId: String
+  parentId: String
   name: String
 }
 
@@ -89,7 +91,7 @@ type Folder {
   name: String
   description: String
   thumbnailUrl: String
-  parentId: Int
+  parentId: String
   status: Status
   createdDate: String
   modifiedDate: String

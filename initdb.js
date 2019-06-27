@@ -93,7 +93,6 @@ module.exports = function createDbMap(logger, config, metricsCounters) {
     checkMax(connKey, dbname, uri);
     const startTime = startQuery(dbname);
     const queryTimeoutMillis = queryTimeoutsByDb[dbname] || 30000;
-    console.log("TCL: wrapOneTry -> queryTimeoutMillis", queryTimeoutMillis)
     // here's where we invoke the function
 
     return fun

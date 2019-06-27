@@ -20,8 +20,8 @@ module.exports = {
             return {}
         },
         folders: async (parent, { input = {} }, { dataSources }, info) => {
-            const folderName = input.name ? input.name : null
-            const folders = await dataSources.folder.getFoldersByName(folderName);
+            const { name, parentId, userId } = input
+            const folders = await dataSources.folder.getFolders({ name, parentId, userId });
             return folders
         }
     }
