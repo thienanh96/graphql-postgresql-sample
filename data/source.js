@@ -52,9 +52,9 @@ class UserSource extends RESTDataSource {
                 const convertedUser = convertToCamelcaseObject(createResult)
                 return convertedUser
             }
-            const error = new Error('Create user failure');
-            error.code = 500
-            throw error
+            throw getFailureResponse({
+                message: 'Create user failure'
+            })
         } catch (error) {
             throw error
 
