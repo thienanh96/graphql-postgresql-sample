@@ -71,9 +71,9 @@ class UserSource extends RESTDataSource {
                 const convertedUser = convertToCamelcaseObject(deleteResult)
                 return convertedUser
             }
-            const error = new Error('Delete user failure');
-            error.code = 500
-            throw error
+            throw getFailureResponse({
+                message: 'Delete user failure'
+            })
         } catch (error) {
             throw error
 
@@ -182,9 +182,9 @@ class FolderSource extends RESTDataSource {
                 const convertedFolder = convertToCamelcaseObject(folder)
                 return convertedFolder
             }
-            const error = new Error('Create folder failure');
-            error.code = 500
-            throw error
+            throw getFailureResponse({
+                message: 'Create folder failure'
+            })
         } catch (error) {
             throw error
 
@@ -205,9 +205,9 @@ class FolderSource extends RESTDataSource {
                 const convertedFolder = convertToCamelcaseObject(updateResult)
                 return convertedFolder
             }
-            const error = new Error('Update folder failure');
-            error.code = 500
-            throw error
+            throw getFailureResponse({
+                message: 'Update folder failure'
+            })
         } catch (error) {
             throw error
 
@@ -224,9 +224,9 @@ class FolderSource extends RESTDataSource {
                 const convertedFolder = convertToCamelcaseObject(deleteResult)
                 return convertedFolder
             }
-            const error = new Error('Delete folder failure');
-            error.code = 500
-            throw error
+            throw getFailureResponse({
+                message: 'Delete folder failure'
+            })
         } catch (error) {
             throw error
 
